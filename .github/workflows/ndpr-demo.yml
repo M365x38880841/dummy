@@ -1,0 +1,35 @@
+name: ndpr-demo
+
+on:
+  push:
+    paths: ['ndpr-demo/**', '.github/workflows/ndpr-demo.yml']
+  pull_request:
+    paths: ['ndpr-demo/**', '.github/workflows/ndpr-demo.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ndpr-demo
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ndpr-demo/package-lock.json
+      - run: npm ci --ignore-scripts
+      - name: Dependency audit (prod deps, high+)
+        run: npm run audit:deps
+      - name: Toolkit security probe (evidence of adoption risks)
+        run: npm run security:probe -- --no-color
+      - name: NDPA compliance gate
+        run: npm run audit:ndpr -- --no-color
+      - name: Build
+        run: npm run build
+      - name: Container build
+        run: docker build -t ndpr-demo:ci .

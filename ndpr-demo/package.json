@@ -1,0 +1,41 @@
+{
+  "name": "ndpr-toolkit-demo",
+  "version": "1.0.0",
+  "description": "Demo app showing the value and the risks of adopting @tantainnovative/ndpr-toolkit",
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c blue,green \"node --watch server/index.js\" \"vite\"",
+    "build": "vite build",
+    "start": "NODE_ENV=production node server/index.js",
+    "security:probe": "node scripts/security-probe.mjs",
+    "audit:ndpr": "ndpr audit --config ndpr.audit.json",
+    "audit:deps": "npm audit --omit=dev --audit-level=high",
+    "ci": "npm run audit:deps && npm run security:probe && npm run audit:ndpr && npm run build"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@radix-ui/react-label": "^2.1.15",
+    "@radix-ui/react-slot": "^1.3.3",
+    "@radix-ui/react-switch": "^1.3.7",
+    "@radix-ui/react-tabs": "^1.1.21",
+    "@tantainnovative/ndpr-toolkit": "6.1.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "lucide-react": "^1.47.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.1",
+    "concurrently": "^10.0.5",
+    "vite": "^8.3.0"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  }
+}
